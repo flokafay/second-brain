@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Second Brain</title>
+  <style>
+    :root{--bg:#0b1020;--card:#121a33;--muted:#95a3c7;--text:#eef3ff;--accent:#7aa2ff;--ok:#3ddc97}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#0b1020,#0f1730);color:var(--text)}
+    .wrap{max-width:1100px;margin:24px auto;padding:0 16px}
+    h1{margin:0 0 8px}
+    .muted{color:var(--muted)}
+    .grid{display:grid;grid-template-columns:repeat(5,minmax(180px,1fr));gap:12px;margin-top:16px}
+    .col{background:var(--card);border:1px solid #26335f;border-radius:14px;padding:12px}
+    .col h3{margin:0 0 10px;font-size:14px;color:#c8d6ff}
+    .task{font-size:13px;padding:8px;border-radius:10px;background:#0f1730;margin:8px 0;border:1px solid #243463}
+    .bar{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+    .chip{background:#111b39;border:1px solid #2a3f7a;padding:6px 10px;border-radius:999px;font-size:12px}
+    .links a{color:var(--accent);text-decoration:none;margin-right:12px}
+    .links a:hover{text-decoration:underline}
+    pre{white-space:pre-wrap;background:#0f1730;padding:10px;border-radius:10px;border:1px solid #26335f;max-height:260px;overflow:auto}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+    @media (max-width:900px){.grid{grid-template-columns:1fr 1fr}.row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Second Brain</h1>
+    <div class="muted">Live visual board</div>
+    <div class="bar" id="metrics"></div>
+    <div class="grid" id="board"></div>
+
+    <div class="row">
+      <div>
+        <h3>Giaco Tasks</h3>
+        <pre id="giaco">Loading…</pre>
+      </div>
+      <div>
+        <h3>History Log (latest)</h3>
+        <pre id="history">Loading…</pre>
+      </div>
+    </div>
+
+    <div class="links" style="margin-top:14px">
+      <a href="board.md" target="_blank">board.md</a>
+      <a href="today.md" target="_blank">today.md</a>
+      <a href="projects.md" target="_blank">projects.md</a>
+      <a href="history-log.md" target="_blank">history-log.md</a>
+    </div>
+  </div>
+
+<script>
+const cols=["INBOX","NEXT","DOING","WAITING","DONE"];
+function extractSection(md, title){
+  const r=new RegExp(`### ${title}\\n([\\s\\S]*?)(?=\\n### |\\n---|$)`,'m');
+  return (md.match(r)||[])[1]?.trim()||'';
+}
+function tasksFrom(sec){
+  return sec.split('\n').filter(l=>l.trim().startsWith('-')).map(l=>l.trim());
+}
+function chip(text){const d=document.createElement('div');d.className='chip';d.textContent=text;return d}
+async function load(){
+  const [board,giaco,history]=await Promise.all([
+    fetch('board.md').then(r=>r.text()),
+    fetch('giaco-tasks.md').then(r=>r.text()),
+    fetch('history-log.md').then(r=>r.text())
+  ]);
+  document.getElementById('giaco').textContent=giaco;
+  document.getElementById('history').textContent=history.split('\n').slice(-28).join('\n');
+
+  const boardEl=document.getElementById('board');
+  let open=0, doing=0, waiting=0, done=0;
+  cols.forEach(c=>{
+    const sec=extractSection(board,c);
+    const tasks=tasksFrom(sec);
+    const col=document.createElement('div');col.className='col';
+    col.innerHTML=`<h3>${c}</h3>`;
+    tasks.forEach(t=>{const d=document.createElement('div');d.className='task';d.textContent=t;col.appendChild(d)});
+    if(!tasks.length){const d=document.createElement('div');d.className='muted';d.textContent='No items';col.appendChild(d)}
+    boardEl.appendChild(col);
+    if(c==='DONE') done+=tasks.length; else open+=tasks.length;
+    if(c==='DOING') doing=tasks.length; if(c==='WAITING') waiting=tasks.length;
+  });
+  const m=document.getElementById('metrics');
+  m.append(chip(`Open: ${open}`),chip(`Doing: ${doing}`),chip(`Waiting: ${waiting}`),chip(`Done: ${done}`));
+}
+load().catch(e=>{document.body.insertAdjacentHTML('beforeend',`<pre>${e}</pre>`)})
+</script>
+</body>
+</html>
