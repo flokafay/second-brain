@@ -5,43 +5,74 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Second Brain</title>
   <style>
-    :root{--bg:#0b1020;--card:#121a33;--muted:#95a3c7;--text:#eef3ff;--accent:#7aa2ff;--ok:#3ddc97}
-    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#0b1020,#0f1730);color:var(--text)}
-    .wrap{max-width:1100px;margin:24px auto;padding:0 16px}
-    h1{margin:0 0 8px}
-    .muted{color:var(--muted)}
-    .grid{display:grid;grid-template-columns:repeat(5,minmax(180px,1fr));gap:12px;margin-top:16px}
-    .col{background:var(--card);border:1px solid #26335f;border-radius:14px;padding:12px}
-    .col h3{margin:0 0 10px;font-size:14px;color:#c8d6ff}
-    .task{font-size:13px;padding:8px;border-radius:10px;background:#0f1730;margin:8px 0;border:1px solid #243463}
-    .bar{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
-    .chip{background:#111b39;border:1px solid #2a3f7a;padding:6px 10px;border-radius:999px;font-size:12px}
-    .links a{color:var(--accent);text-decoration:none;margin-right:12px}
-    .links a:hover{text-decoration:underline}
-    pre{white-space:pre-wrap;background:#0f1730;padding:10px;border-radius:10px;border:1px solid #26335f;max-height:260px;overflow:auto}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-    @media (max-width:900px){.grid{grid-template-columns:1fr 1fr}.row{grid-template-columns:1fr}}
+    :root{
+      --bg:#0b1020;--bg2:#111a35;--card:#121a33;--line:#2a3f7a;--text:#eef3ff;--muted:#9aa9cf;--accent:#7aa2ff;--ok:#3ddc97;--warn:#ffd166;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,var(--bg),var(--bg2));color:var(--text)}
+    .wrap{max-width:1200px;margin:20px auto;padding:0 14px 24px}
+    .top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+    h1{margin:0;font-size:28px}
+    .sub{color:var(--muted);font-size:13px}
+    .controls{display:flex;gap:8px;flex-wrap:wrap}
+    button,.btn{background:#111b39;color:#dbe6ff;border:1px solid var(--line);padding:8px 10px;border-radius:10px;font-size:12px;cursor:pointer}
+    button:hover,.btn:hover{border-color:#4c6bd0}
+
+    .metrics{display:grid;grid-template-columns:repeat(4,minmax(120px,1fr));gap:10px;margin:14px 0}
+    .metric{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px}
+    .metric .k{font-size:20px;font-weight:700}
+    .metric .l{color:var(--muted);font-size:12px}
+
+    .board{display:grid;grid-template-columns:repeat(5,minmax(210px,1fr));gap:10px}
+    .col{background:var(--card);border:1px solid var(--line);border-radius:12px;min-height:220px;display:flex;flex-direction:column}
+    .colhead{padding:10px;border-bottom:1px solid #22345f;display:flex;justify-content:space-between;align-items:center}
+    .colhead h3{margin:0;font-size:13px;letter-spacing:.3px}
+    .count{font-size:11px;color:var(--muted)}
+    .tasks{padding:8px;overflow:auto;max-height:430px}
+    .task{padding:9px;border:1px solid #243463;background:#0f1730;border-radius:10px;margin:8px 0;font-size:13px;line-height:1.35}
+    .task small{display:block;color:var(--muted);margin-top:4px}
+
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+    .panel{background:var(--card);border:1px solid var(--line);border-radius:12px}
+    .panel h3{margin:0;padding:10px;border-bottom:1px solid #22345f;font-size:13px}
+    pre{margin:0;padding:10px;max-height:260px;overflow:auto;background:#0f1730;border-radius:0 0 12px 12px;color:#d7e4ff;font-size:12px;line-height:1.45}
+
+    .footer{margin-top:10px;display:flex;gap:10px;flex-wrap:wrap}
+    .footer a{color:var(--accent);text-decoration:none;font-size:13px}
+    .footer a:hover{text-decoration:underline}
+
+    @media (max-width:1100px){.board{grid-template-columns:repeat(2,minmax(180px,1fr))}}
+    @media (max-width:700px){.metrics{grid-template-columns:1fr 1fr}.row{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <h1>Second Brain</h1>
-    <div class="muted">Live visual board</div>
-    <div class="bar" id="metrics"></div>
-    <div class="grid" id="board"></div>
-
-    <div class="row">
+    <div class="top">
       <div>
-        <h3>Giaco Tasks</h3>
-        <pre id="giaco">Loading…</pre>
+        <h1>Second Brain</h1>
+        <div class="sub" id="stamp">Live visual board</div>
       </div>
-      <div>
-        <h3>History Log (latest)</h3>
-        <pre id="history">Loading…</pre>
+      <div class="controls">
+        <button id="refreshBtn">Refresh</button>
+        <button id="compactBtn">Compact</button>
       </div>
     </div>
 
-    <div class="links" style="margin-top:14px">
+    <div class="metrics">
+      <div class="metric"><div class="k" id="mOpen">0</div><div class="l">Open</div></div>
+      <div class="metric"><div class="k" id="mDoing">0</div><div class="l">Doing</div></div>
+      <div class="metric"><div class="k" id="mWaiting">0</div><div class="l">Waiting</div></div>
+      <div class="metric"><div class="k" id="mDone">0</div><div class="l">Done</div></div>
+    </div>
+
+    <div class="board" id="board"></div>
+
+    <div class="row">
+      <div class="panel"><h3>Giaco Tasks</h3><pre id="giaco">Loading…</pre></div>
+      <div class="panel"><h3>Recent History</h3><pre id="history">Loading…</pre></div>
+    </div>
+
+    <div class="footer">
       <a href="board.md" target="_blank">board.md</a>
       <a href="today.md" target="_blank">today.md</a>
       <a href="projects.md" target="_blank">projects.md</a>
@@ -51,6 +82,8 @@
 
 <script>
 const cols=["INBOX","NEXT","DOING","WAITING","DONE"];
+let compact=false;
+
 function extractSection(md, title){
   const r=new RegExp(`### ${title}\\n([\\s\\S]*?)(?=\\n### |\\n---|$)`,'m');
   return (md.match(r)||[])[1]?.trim()||'';
@@ -58,33 +91,57 @@ function extractSection(md, title){
 function tasksFrom(sec){
   return sec.split('\n').filter(l=>l.trim().startsWith('-')).map(l=>l.trim());
 }
-function chip(text){const d=document.createElement('div');d.className='chip';d.textContent=text;return d}
-async function load(){
-  const [board,giaco,history]=await Promise.all([
-    fetch('board.md').then(r=>r.text()),
-    fetch('giaco-tasks.md').then(r=>r.text()),
-    fetch('history-log.md').then(r=>r.text())
-  ]);
-  document.getElementById('giaco').textContent=giaco;
-  document.getElementById('history').textContent=history.split('\n').slice(-28).join('\n');
-
-  const boardEl=document.getElementById('board');
-  let open=0, doing=0, waiting=0, done=0;
-  cols.forEach(c=>{
-    const sec=extractSection(board,c);
-    const tasks=tasksFrom(sec);
-    const col=document.createElement('div');col.className='col';
-    col.innerHTML=`<h3>${c}</h3>`;
-    tasks.forEach(t=>{const d=document.createElement('div');d.className='task';d.textContent=t;col.appendChild(d)});
-    if(!tasks.length){const d=document.createElement('div');d.className='muted';d.textContent='No items';col.appendChild(d)}
-    boardEl.appendChild(col);
-    if(c==='DONE') done+=tasks.length; else open+=tasks.length;
-    if(c==='DOING') doing=tasks.length; if(c==='WAITING') waiting=tasks.length;
-  });
-  const m=document.getElementById('metrics');
-  m.append(chip(`Open: ${open}`),chip(`Doing: ${doing}`),chip(`Waiting: ${waiting}`),chip(`Done: ${done}`));
+function parseTask(line){
+  // - [ ] (P2) [GIACO] text
+  const m=line.match(/^- \[(.| )\] \((P\d)\) \[(ME|GIACO)\] (.*)$/i);
+  if(!m) return {raw:line,done:false,p:'',o:'',t:line};
+  return {done:m[1].toLowerCase()==='x',p:m[2],o:m[3],t:m[4],raw:line};
 }
-load().catch(e=>{document.body.insertAdjacentHTML('beforeend',`<pre>${e}</pre>`)})
+
+async function load(){
+  const bust='?v='+Date.now();
+  const [board,giaco,history]=await Promise.all([
+    fetch('board.md'+bust).then(r=>r.text()),
+    fetch('giaco-tasks.md'+bust).then(r=>r.text()),
+    fetch('history-log.md'+bust).then(r=>r.text())
+  ]);
+
+  document.getElementById('stamp').textContent='Updated '+new Date().toLocaleString();
+  document.getElementById('giaco').textContent=giaco;
+  document.getElementById('history').textContent=history.split('\n').slice(-40).join('\n');
+
+  const boardEl=document.getElementById('board'); boardEl.innerHTML='';
+  let open=0,doing=0,waiting=0,done=0;
+
+  cols.forEach(c=>{
+    const tasks=tasksFrom(extractSection(board,c)).map(parseTask);
+    const col=document.createElement('section'); col.className='col';
+    col.innerHTML=`<div class="colhead"><h3>${c}</h3><span class="count">${tasks.length}</span></div><div class="tasks"></div>`;
+    const tbox=col.querySelector('.tasks');
+
+    if(!tasks.length){
+      const empty=document.createElement('div'); empty.className='sub'; empty.style.padding='6px'; empty.textContent='No items'; tbox.appendChild(empty);
+    }
+
+    tasks.forEach(x=>{
+      const d=document.createElement('article'); d.className='task';
+      d.innerHTML=`${x.t}${compact?'':`<small>${x.p || ''} · ${x.o || ''}</small>`}`;
+      tbox.appendChild(d);
+    });
+
+    boardEl.appendChild(col);
+
+    if(c==='DONE') done+=tasks.length; else open+=tasks.length;
+    if(c==='DOING') doing=tasks.length;
+    if(c==='WAITING') waiting=tasks.length;
+  });
+
+  mOpen.textContent=open; mDoing.textContent=doing; mWaiting.textContent=waiting; mDone.textContent=done;
+}
+
+refreshBtn.onclick=load;
+compactBtn.onclick=()=>{compact=!compact; compactBtn.textContent=compact?'Expanded':'Compact'; load();};
+load();
 </script>
 </body>
 </html>
