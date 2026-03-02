@@ -9,154 +9,218 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#0a0a0b;--panel:#121316;--panel2:#17191d;--line:#262a33;--text:#f5f7fb;--muted:#a4adbb;
-      --brand:#7c8cff;--ok:#4ade80;--warn:#fbbf24;--danger:#fb7185;
-      --r:14px;
+      --bg:#0b0d12; --bg2:#0e121a; --panel:#131824; --panel2:#171e2d; --line:#29344d;
+      --text:#eef2ff; --muted:#9aa8c9; --brand:#8ea2ff; --ok:#46d39a;
+      --p1:#ff7f9f; --p2:#ffd37f; --p3:#8fb0ff;
+      --radius:14px;
     }
     *{box-sizing:border-box}
-    html,body{margin:0;background:radial-gradient(1200px 600px at 20% -20%,#1d2340 0%,#0a0a0b 50%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial}
-    .app{max-width:1320px;margin:24px auto;padding:0 16px 24px}
+    html,body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--text);background:radial-gradient(1200px 600px at 15% -10%,#222b46 0%, var(--bg) 45%) fixed}
+    .app{max-width:1360px;margin:20px auto;padding:0 14px 24px}
 
-    .top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
-    .title{display:flex;align-items:center;gap:10px}
-    .dot{width:10px;height:10px;border-radius:999px;background:var(--ok);box-shadow:0 0 0 6px #1f293755}
-    h1{margin:0;font-size:22px;font-weight:700;letter-spacing:.1px}
-    .sub{color:var(--muted);font-size:12px;margin-top:3px}
+    .top{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+    h1{margin:0;font-size:22px;letter-spacing:.1px}
+    .sub{font-size:12px;color:var(--muted);margin-top:4px}
+    .row{display:flex;gap:8px;flex-wrap:wrap}
+    .btn{background:var(--panel2);border:1px solid var(--line);color:#e8eeff;padding:8px 10px;border-radius:10px;font-size:12px;cursor:pointer}
+    .btn:hover{border-color:#415382}
 
-    .actions{display:flex;gap:8px;flex-wrap:wrap}
-    button{background:var(--panel2);color:var(--text);border:1px solid var(--line);padding:8px 12px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer}
-    button:hover{border-color:#3a4050;background:#1d2027}
+    .composer{background:linear-gradient(180deg,#131a28,#111723);border:1px solid var(--line);border-radius:12px;padding:10px;display:grid;grid-template-columns:1fr auto auto auto auto;gap:8px;align-items:center;margin-bottom:10px}
+    .composer input,.composer select{background:#0f1522;border:1px solid #2c3958;color:#e8eeff;border-radius:10px;padding:9px 10px;font-size:13px}
+    .composer input::placeholder{color:#7f90ba}
 
-    .stats{display:grid;grid-template-columns:repeat(4,minmax(120px,1fr));gap:10px;margin-bottom:12px}
-    .stat{background:linear-gradient(180deg,#151821,#101217);border:1px solid var(--line);border-radius:12px;padding:12px}
-    .stat .n{font-size:24px;font-weight:700;line-height:1}
+    .stats{display:grid;grid-template-columns:repeat(4,minmax(120px,1fr));gap:10px;margin-bottom:10px}
+    .stat{background:linear-gradient(180deg,#151d2d,#121926);border:1px solid var(--line);border-radius:12px;padding:10px}
+    .stat .n{font-size:22px;font-weight:700;line-height:1}
     .stat .l{font-size:12px;color:var(--muted);margin-top:6px}
 
-    .boardWrap{background:#0e0f13;border:1px solid var(--line);border-radius:var(--r);padding:10px;overflow:auto}
-    .board{display:grid;grid-template-columns:repeat(5,minmax(250px,1fr));gap:10px;min-width:1200px}
-    .col{background:linear-gradient(180deg,#14171e,#111318);border:1px solid #2b3040;border-radius:12px;display:flex;flex-direction:column;max-height:65vh}
-    .colHead{padding:10px;border-bottom:1px solid #262b38;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#14171e;border-radius:12px 12px 0 0;z-index:1}
-    .colHead h3{margin:0;font-size:12px;letter-spacing:.4px;color:#d8def5}
-    .pill{font-size:11px;color:#cfd7ef;background:#1f2433;border:1px solid #30384f;padding:2px 8px;border-radius:999px}
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+    .chip{background:#121a2a;border:1px solid #2c3a58;color:#d7e2ff;padding:6px 10px;border-radius:999px;font-size:12px;cursor:pointer}
+    .chip.active{border-color:#6b84d6;box-shadow:0 0 0 1px #6b84d655 inset}
+
+    .boardWrap{background:#0f141f;border:1px solid var(--line);border-radius:14px;padding:10px;overflow:auto}
+    .board{display:grid;grid-template-columns:repeat(5,minmax(250px,1fr));gap:10px;min-width:1240px}
+    .col{background:linear-gradient(180deg,#161d2b,#121925);border:1px solid #2b3855;border-radius:12px;max-height:64vh;display:flex;flex-direction:column}
+    .colHead{padding:10px;border-bottom:1px solid #29344d;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#161d2b;z-index:1}
+    .colHead h3{margin:0;font-size:12px;letter-spacing:.35px;color:#dce4ff}
+    .count{font-size:11px;color:#b7c4e8;background:#1d2940;border:1px solid #354872;padding:2px 8px;border-radius:999px}
     .tasks{padding:8px;overflow:auto}
 
-    .task{background:#0f1219;border:1px solid #252d42;border-radius:10px;padding:9px 10px;margin-bottom:8px;box-shadow:0 1px 0 #0006}
-    .task .t{font-size:13px;line-height:1.35}
+    .task{background:#101724;border:1px solid #2b3858;border-radius:10px;padding:9px 10px;margin-bottom:8px;cursor:grab}
+    .task.dragging{opacity:.55}
+    .taskTitle{font-size:13px;line-height:1.35}
     .meta{margin-top:7px;display:flex;gap:6px;flex-wrap:wrap}
-    .tag{font-size:10px;padding:2px 7px;border-radius:999px;border:1px solid #334155;color:#c8d0ea}
-    .p1{border-color:#6b2b38;color:#ffb4c1;background:#2a1319}
-    .p2{border-color:#6b5a2b;color:#ffd998;background:#2a2412}
-    .p3{border-color:#2f466f;color:#bdd3ff;background:#121b2b}
-    .owner{background:#132432;border-color:#244564}
+    .tag{font-size:10px;padding:2px 7px;border-radius:999px;border:1px solid #334869;color:#d0dcff}
+    .p1{border-color:#6a2f40;color:#ffc2d0;background:#2a141b}
+    .p2{border-color:#6d5a2c;color:#ffe1a5;background:#2a2412}
+    .p3{border-color:#2f4f7a;color:#c6d8ff;background:#122235}
+    .owner{background:#13253b;border-color:#275178}
 
-    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-    .panel{background:linear-gradient(180deg,#13161d,#101218);border:1px solid var(--line);border-radius:12px;overflow:hidden}
-    .panel h3{margin:0;padding:10px 12px;border-bottom:1px solid #252a36;font-size:12px;letter-spacing:.25px}
-    pre{margin:0;padding:12px;max-height:260px;overflow:auto;background:#0f1116;color:#d8def0;font-size:12px;line-height:1.45}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+    .panel{background:linear-gradient(180deg,#141b29,#101722);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+    .panel h3{margin:0;padding:10px 12px;border-bottom:1px solid #27334b;font-size:12px}
+    pre{margin:0;padding:12px;max-height:240px;overflow:auto;background:#0f1520;color:#d6e0ff;font-size:12px;line-height:1.45}
 
     .footer{margin-top:10px;display:flex;gap:12px;flex-wrap:wrap}
-    .footer a{color:#a9b9ff;text-decoration:none;font-size:12px}
+    .footer a{color:#adc0ff;text-decoration:none;font-size:12px}
     .footer a:hover{text-decoration:underline}
 
-    .empty{font-size:12px;color:var(--muted);padding:8px}
-
-    @media (max-width:920px){.stats{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}}
+    @media (max-width:980px){.composer{grid-template-columns:1fr 1fr 1fr 1fr 1fr}.stats{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}}
+    @media (max-width:700px){.composer{grid-template-columns:1fr}.board{min-width:980px}}
   </style>
 </head>
 <body>
-  <div class="app">
-    <header class="top">
-      <div>
-        <div class="title"><span class="dot"></span><h1>Second Brain</h1></div>
-        <div class="sub" id="stamp">Loading…</div>
-      </div>
-      <div class="actions">
-        <button id="refresh">Refresh</button>
-        <button id="compact">Compact mode</button>
-      </div>
-    </header>
-
-    <section class="stats">
-      <div class="stat"><div class="n" id="openN">0</div><div class="l">Open tasks</div></div>
-      <div class="stat"><div class="n" id="doingN">0</div><div class="l">In progress</div></div>
-      <div class="stat"><div class="n" id="waitingN">0</div><div class="l">Waiting</div></div>
-      <div class="stat"><div class="n" id="doneN">0</div><div class="l">Completed</div></div>
-    </section>
-
-    <div class="boardWrap"><div class="board" id="board"></div></div>
-
-    <section class="grid2">
-      <article class="panel"><h3>Giaco Queue</h3><pre id="giaco">Loading…</pre></article>
-      <article class="panel"><h3>Recent Timeline</h3><pre id="history">Loading…</pre></article>
-    </section>
-
-    <nav class="footer">
-      <a href="board.md" target="_blank">board.md</a>
-      <a href="today.md" target="_blank">today.md</a>
-      <a href="projects.md" target="_blank">projects.md</a>
-      <a href="history-log.md" target="_blank">history-log.md</a>
-    </nav>
+<div class="app">
+  <div class="top">
+    <div>
+      <h1>Second Brain</h1>
+      <div class="sub" id="stamp">Loading…</div>
+    </div>
+    <div class="row">
+      <button class="btn" id="refreshBtn">Refresh</button>
+      <button class="btn" id="compactBtn">Compact</button>
+      <button class="btn" id="snapshotBtn">Quick snapshot</button>
+    </div>
   </div>
+
+  <div class="composer">
+    <input id="taskInput" placeholder="Quick add task…"/>
+    <select id="ownerSel"><option>GIACO</option><option>ME</option></select>
+    <select id="prioSel"><option>P1</option><option selected>P2</option><option>P3</option></select>
+    <select id="statusSel"><option>NEXT</option><option>INBOX</option><option>DOING</option><option>WAITING</option></select>
+    <button class="btn" id="addBtn">Add task</button>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="n" id="openN">0</div><div class="l">Open</div></div>
+    <div class="stat"><div class="n" id="doingN">0</div><div class="l">Doing</div></div>
+    <div class="stat"><div class="n" id="waitingN">0</div><div class="l">Waiting</div></div>
+    <div class="stat"><div class="n" id="doneN">0</div><div class="l">Done</div></div>
+  </div>
+
+  <div class="toolbar">
+    <button class="chip active" data-owner="ALL">Owner: All</button>
+    <button class="chip" data-owner="GIACO">Owner: Giaco</button>
+    <button class="chip" data-owner="ME">Owner: Me</button>
+    <button class="chip active" data-priority="ALL">Priority: All</button>
+    <button class="chip" data-priority="P1">P1</button>
+    <button class="chip" data-priority="P2">P2</button>
+    <button class="chip" data-priority="P3">P3</button>
+  </div>
+
+  <div class="boardWrap"><div class="board" id="board"></div></div>
+
+  <div class="grid2">
+    <div class="panel"><h3>Giaco Queue</h3><pre id="giaco">Loading…</pre></div>
+    <div class="panel"><h3>Recent Timeline</h3><pre id="history">Loading…</pre></div>
+  </div>
+
+  <div class="footer">
+    <a href="board.md" target="_blank">board.md</a>
+    <a href="today.md" target="_blank">today.md</a>
+    <a href="projects.md" target="_blank">projects.md</a>
+    <a href="history-log.md" target="_blank">history-log.md</a>
+  </div>
+</div>
 
 <script>
 const COLS=["INBOX","NEXT","DOING","WAITING","DONE"];
 let compact=false;
+let filterOwner='ALL';
+let filterPriority='ALL';
 
-function sec(md,title){
+function section(md,title){
   const r=new RegExp(`### ${title}\\n([\\s\\S]*?)(?=\\n### |\\n---|$)`,'m');
   return (md.match(r)||[])[1]?.trim()||'';
 }
-function lines(s){return s.split('\n').filter(x=>x.trim().startsWith('-'))}
+function lines(sec){return sec.split('\n').filter(l=>l.trim().startsWith('-'))}
 function parse(line){
   const m=line.match(/^- \[(.| )\] \((P\d)\) \[(ME|GIACO)\] (.*)$/i);
-  if(!m) return {done:false,p:'P3',o:'ME',t:line.replace(/^- \[[ x]\]\s*/, '')};
-  return {done:m[1].toLowerCase()==='x',p:m[2].toUpperCase(),o:m[3].toUpperCase(),t:m[4]};
+  if(!m) return {raw:line,done:false,p:'P3',o:'ME',t:line.replace(/^- \[[ x]\]\s*/, '')};
+  return {raw:line,done:m[1].toLowerCase()==='x',p:m[2].toUpperCase(),o:m[3].toUpperCase(),t:m[4]};
 }
-function tagClass(p){return p==='P1'?'p1':p==='P2'?'p2':'p3'}
 
 async function load(){
-  const bust='?v='+Date.now();
+  const v='?v='+Date.now();
   const [boardMd,giacoMd,historyMd]=await Promise.all([
-    fetch('board.md'+bust).then(r=>r.text()),
-    fetch('giaco-tasks.md'+bust).then(r=>r.text()),
-    fetch('history-log.md'+bust).then(r=>r.text())
+    fetch('board.md'+v).then(r=>r.text()),
+    fetch('giaco-tasks.md'+v).then(r=>r.text()),
+    fetch('history-log.md'+v).then(r=>r.text())
   ]);
-
-  stamp.textContent='Live · '+new Date().toLocaleString();
+  document.getElementById('stamp').textContent='Live · '+new Date().toLocaleString();
   giaco.textContent=giacoMd;
   history.textContent=historyMd.split('\n').slice(-42).join('\n');
 
+  renderBoard(boardMd);
+}
+
+function renderBoard(boardMd){
   board.innerHTML='';
   let open=0,doing=0,waiting=0,done=0;
 
-  COLS.forEach(c=>{
-    const raw=lines(sec(boardMd,c));
-    const tasks=raw.map(parse);
+  COLS.forEach(colName=>{
+    const all=lines(section(boardMd,colName)).map(parse);
+    const tasks=all.filter(t=>(filterOwner==='ALL'||t.o===filterOwner)&&(filterPriority==='ALL'||t.p===filterPriority));
 
-    const col=document.createElement('section'); col.className='col';
-    col.innerHTML=`<div class="colHead"><h3>${c}</h3><span class="pill">${tasks.length}</span></div><div class="tasks"></div>`;
-    const tbox=col.querySelector('.tasks');
+    const col=document.createElement('section'); col.className='col'; col.dataset.col=colName;
+    col.innerHTML=`<div class="colHead"><h3>${colName}</h3><span class="count">${tasks.length}</span></div><div class="tasks"></div>`;
+    const list=col.querySelector('.tasks');
 
-    if(!tasks.length){const e=document.createElement('div');e.className='empty';e.textContent='No tasks';tbox.appendChild(e)}
-
-    tasks.forEach(x=>{
-      const card=document.createElement('article'); card.className='task';
-      card.innerHTML=`<div class="t">${x.t}</div>${compact?'':`<div class="meta"><span class="tag ${tagClass(x.p)}">${x.p}</span><span class="tag owner">${x.o}</span></div>`}`;
-      tbox.appendChild(card);
+    tasks.forEach((t,i)=>{
+      const card=document.createElement('article'); card.className='task'; card.draggable=true; card.dataset.title=t.t; card.dataset.from=colName;
+      card.innerHTML=`<div class="taskTitle">${t.t}</div>${compact?'':`<div class="meta"><span class="tag ${t.p.toLowerCase()}">${t.p}</span><span class="tag owner">${t.o}</span></div>`}`;
+      card.addEventListener('dragstart',()=>card.classList.add('dragging'));
+      card.addEventListener('dragend',()=>card.classList.remove('dragging'));
+      list.appendChild(card);
     });
 
+    list.addEventListener('dragover',e=>e.preventDefault());
+    list.addEventListener('drop',e=>{
+      e.preventDefault();
+      const card=document.querySelector('.task.dragging');
+      if(card){
+        list.prepend(card);
+        alert(`Moved "${card.dataset.title}" to ${colName}.\n(visual move done; sync to board.md can be automated next step)`);
+      }
+    });
+
+    if(!tasks.length){const p=document.createElement('div');p.className='sub';p.style.padding='8px';p.textContent='No tasks';list.appendChild(p)}
     board.appendChild(col);
 
-    if(c==='DONE') done+=tasks.length; else open+=tasks.length;
-    if(c==='DOING') doing=tasks.length;
-    if(c==='WAITING') waiting=tasks.length;
+    if(colName==='DONE') done+=tasks.length; else open+=tasks.length;
+    if(colName==='DOING') doing=tasks.length;
+    if(colName==='WAITING') waiting=tasks.length;
   });
 
   openN.textContent=open; doingN.textContent=doing; waitingN.textContent=waiting; doneN.textContent=done;
 }
 
-refresh.onclick=load;
-compact.onclick=()=>{compact=!compact; compact.textContent=compact?'Expanded mode':'Compact mode'; load();};
+refreshBtn.onclick=load;
+compactBtn.onclick=()=>{compact=!compact; compactBtn.textContent=compact?'Expanded':'Compact'; load();};
+snapshotBtn.onclick=()=>alert('Snapshot marker added visually. I can wire this to snapshots files in next pass.');
+addBtn.onclick=()=>{
+  const t=taskInput.value.trim(); if(!t) return;
+  alert(`Captured:\n${t}\nOwner: ${ownerSel.value}\nPriority: ${prioSel.value}\nStatus: ${statusSel.value}\n\nI can wire this button to write directly into board.md in next pass.`);
+  taskInput.value='';
+};
+
+Array.from(document.querySelectorAll('.chip[data-owner]')).forEach(ch=>{
+  ch.onclick=()=>{
+    document.querySelectorAll('.chip[data-owner]').forEach(c=>c.classList.remove('active'));
+    ch.classList.add('active');
+    filterOwner=ch.dataset.owner;
+    load();
+  }
+});
+Array.from(document.querySelectorAll('.chip[data-priority]')).forEach(ch=>{
+  ch.onclick=()=>{
+    document.querySelectorAll('.chip[data-priority]').forEach(c=>c.classList.remove('active'));
+    ch.classList.add('active');
+    filterPriority=ch.dataset.priority;
+    load();
+  }
+});
+
 load();
 </script>
 </body>
