@@ -9,124 +9,106 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#f6f8fc; --bg2:#eef3fb; --panel:#ffffff; --panel2:#f7f9ff; --line:#dbe3f2;
-      --text:#1f2a44; --muted:#6b7a99; --brand:#4f6ef7; --ok:#1fa971;
-      --p1:#b8335e; --p2:#a56b00; --p3:#345dc9;
-      --radius:14px;
+      --bg:#f7f8fb; --card:#ffffff; --line:#e8ebf2; --text:#1f2430; --muted:#6d7585;
+      --brand:#4d6bfe; --p1:#ad294f; --p2:#9a6400; --p3:#2f57c7; --radius:12px;
     }
     *{box-sizing:border-box}
-    html,body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--text);background:linear-gradient(180deg,var(--bg),var(--bg2)) fixed}
-    .app{max-width:1360px;margin:20px auto;padding:0 14px 24px}
+    html,body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--text)}
+    .app{max-width:1280px;margin:18px auto;padding:0 14px 26px}
 
     .top{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap;margin-bottom:12px}
-    h1{margin:0;font-size:22px;letter-spacing:.1px}
+    h1{margin:0;font-size:22px;font-weight:700}
     .sub{font-size:12px;color:var(--muted);margin-top:4px}
-    .row{display:flex;gap:8px;flex-wrap:wrap}
-    .btn{background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:8px 10px;border-radius:10px;font-size:12px;cursor:pointer}
-    .btn:hover{border-color:#b8c7e4}
+    .btn{background:#fff;border:1px solid var(--line);color:var(--text);padding:7px 10px;border-radius:10px;font-size:12px;cursor:pointer}
+    .btn:hover{border-color:#cfd7e6}
+    .actions{display:flex;gap:8px;flex-wrap:wrap}
 
-    .composer{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px;display:grid;grid-template-columns:1fr auto auto auto auto;gap:8px;align-items:center;margin-bottom:10px}
-    .composer input,.composer select{background:#fff;border:1px solid #d7dfef;color:var(--text);border-radius:10px;padding:9px 10px;font-size:13px}
-
-    .stats{display:grid;grid-template-columns:repeat(4,minmax(120px,1fr));gap:10px;margin-bottom:10px}
-    .stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px}
-    .stat .n{font-size:22px;font-weight:700;line-height:1}
-    .stat .l{font-size:12px;color:var(--muted);margin-top:6px}
+    .stats{display:grid;grid-template-columns:repeat(4,minmax(100px,1fr));gap:10px;margin-bottom:10px}
+    .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:10px}
+    .stat .n{font-size:21px;font-weight:700;line-height:1}
+    .stat .l{font-size:12px;color:var(--muted);margin-top:5px}
 
     .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
-    .chip{background:#fff;border:1px solid var(--line);color:var(--text);padding:6px 10px;border-radius:999px;font-size:12px;cursor:pointer}
-    .chip.active{border-color:#9fb2e6;box-shadow:0 0 0 1px #9fb2e666 inset;background:#f4f7ff}
+    .chip{background:#fff;border:1px solid var(--line);padding:6px 10px;border-radius:999px;font-size:12px;cursor:pointer}
+    .chip.active{border-color:#becaf0;background:#f5f8ff}
 
-    .boardWrap{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px;overflow:auto}
-    .board{display:grid;grid-template-columns:repeat(5,minmax(250px,1fr));gap:10px;min-width:1240px}
-    .col{background:#fbfcff;border:1px solid #dbe3f2;border-radius:12px;max-height:64vh;display:flex;flex-direction:column}
-    .colHead{padding:10px;border-bottom:1px solid #e2e8f5;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#fbfcff;z-index:1}
-    .colHead h3{margin:0;font-size:12px;letter-spacing:.35px;color:#2b3a5d}
-    .count{font-size:11px;color:#41527a;background:#eef3ff;border:1px solid #ccd8f4;padding:2px 8px;border-radius:999px}
+    .boardWrap{border:1px solid var(--line);border-radius:var(--radius);background:#fff;padding:10px;overflow:auto}
+    .board{display:grid;grid-template-columns:repeat(5,minmax(235px,1fr));gap:10px;min-width:1180px}
+    .col{border:1px solid var(--line);border-radius:10px;background:#fcfdff;max-height:62vh;display:flex;flex-direction:column}
+    .colHead{padding:9px 10px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#fcfdff}
+    .colHead h3{margin:0;font-size:12px;letter-spacing:.3px;color:#3a465e}
+    .count{font-size:11px;color:#556684;background:#edf2fb;border:1px solid #d7e1f2;padding:2px 8px;border-radius:999px}
     .tasks{padding:8px;overflow:auto}
 
-    .task{background:#fff;border:1px solid #d8e1f2;border-radius:10px;padding:9px 10px;margin-bottom:8px;cursor:grab}
-    .task.dragging{opacity:.55}
+    .task{border:1px solid #dde5f3;background:#fff;border-radius:10px;padding:8px 9px;margin-bottom:8px;cursor:grab}
+    .task.dragging{opacity:.6}
     .taskTitle{font-size:13px;line-height:1.35}
-    .meta{margin-top:7px;display:flex;gap:6px;flex-wrap:wrap}
-    .tag{font-size:10px;padding:2px 7px;border-radius:999px;border:1px solid #d0d9ee;color:#44567e}
-    .p1{border-color:#f0b8ca;color:var(--p1);background:#fff2f7}
-    .p2{border-color:#f2ddb3;color:var(--p2);background:#fff8ec}
-    .p3{border-color:#cbdaf8;color:var(--p3);background:#f2f7ff}
-    .owner{background:#eef4ff;border-color:#cedaf6}
+    .meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
+    .tag{font-size:10px;padding:2px 7px;border-radius:999px;border:1px solid #d6deef;color:#415274}
+    .p1{color:var(--p1);background:#fff1f5;border-color:#f3c5d3}
+    .p2{color:var(--p2);background:#fff8eb;border-color:#f2ddb1}
+    .p3{color:var(--p3);background:#eff5ff;border-color:#cdddff}
+    .owner{background:#f2f6ff;border-color:#d2dcf5}
 
     .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
-    .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
-    .panel h3{margin:0;padding:10px 12px;border-bottom:1px solid #e4eaf6;font-size:12px}
-    pre{margin:0;padding:12px;max-height:240px;overflow:auto;background:#fff;color:#34466f;font-size:12px;line-height:1.45}
+    .panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+    .panel h3{margin:0;padding:10px 12px;border-bottom:1px solid var(--line);font-size:12px}
+    pre{margin:0;padding:12px;max-height:220px;overflow:auto;background:#fff;color:#34415e;font-size:12px;line-height:1.45}
 
     .footer{margin-top:10px;display:flex;gap:12px;flex-wrap:wrap}
-    .footer a{color:#4f6ef7;text-decoration:none;font-size:12px}
-    .footer a:hover{text-decoration:underline}
+    .footer a{color:var(--brand);text-decoration:none;font-size:12px}
 
-    @media (max-width:980px){.composer{grid-template-columns:1fr 1fr 1fr 1fr 1fr}.stats{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}}
-    @media (max-width:700px){.composer{grid-template-columns:1fr}.board{min-width:980px}}
+    @media (max-width:950px){.stats{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
 <div class="app">
-  <div class="top">
+  <header class="top">
     <div>
       <h1>Second Brain</h1>
       <div class="sub" id="stamp">Loading…</div>
     </div>
-    <div class="row">
+    <div class="actions">
       <button class="btn" id="refreshBtn">Refresh</button>
       <button class="btn" id="compactBtn">Compact</button>
-      <button class="btn" id="snapshotBtn">Quick snapshot</button>
     </div>
-  </div>
+  </header>
 
-  <div class="composer">
-    <input id="taskInput" placeholder="Quick add task…"/>
-    <select id="ownerSel"><option>GIACO</option><option>ME</option></select>
-    <select id="prioSel"><option>P1</option><option selected>P2</option><option>P3</option></select>
-    <select id="statusSel"><option>NEXT</option><option>INBOX</option><option>DOING</option><option>WAITING</option></select>
-    <button class="btn" id="addBtn">Add task</button>
-  </div>
-
-  <div class="stats">
+  <section class="stats">
     <div class="stat"><div class="n" id="openN">0</div><div class="l">Open</div></div>
     <div class="stat"><div class="n" id="doingN">0</div><div class="l">Doing</div></div>
     <div class="stat"><div class="n" id="waitingN">0</div><div class="l">Waiting</div></div>
     <div class="stat"><div class="n" id="doneN">0</div><div class="l">Done</div></div>
-  </div>
+  </section>
 
-  <div class="toolbar">
-    <button class="chip active" data-owner="ALL">Owner: All</button>
-    <button class="chip" data-owner="GIACO">Owner: Giaco</button>
-    <button class="chip" data-owner="ME">Owner: Me</button>
-    <button class="chip active" data-priority="ALL">Priority: All</button>
+  <section class="toolbar">
+    <button class="chip active" data-owner="ALL">All owners</button>
+    <button class="chip" data-owner="GIACO">Giaco</button>
+    <button class="chip" data-owner="ME">Me</button>
+    <button class="chip active" data-priority="ALL">All priority</button>
     <button class="chip" data-priority="P1">P1</button>
     <button class="chip" data-priority="P2">P2</button>
     <button class="chip" data-priority="P3">P3</button>
-  </div>
+  </section>
 
-  <div class="boardWrap"><div class="board" id="board"></div></div>
+  <section class="boardWrap"><div class="board" id="board"></div></section>
 
-  <div class="grid2">
-    <div class="panel"><h3>Giaco Queue</h3><pre id="giaco">Loading…</pre></div>
-    <div class="panel"><h3>Recent Timeline</h3><pre id="history">Loading…</pre></div>
-  </div>
+  <section class="grid2">
+    <article class="panel"><h3>Giaco Queue</h3><pre id="giaco">Loading…</pre></article>
+    <article class="panel"><h3>Recent Timeline</h3><pre id="history">Loading…</pre></article>
+  </section>
 
-  <div class="footer">
+  <nav class="footer">
     <a href="board.md" target="_blank">board.md</a>
     <a href="today.md" target="_blank">today.md</a>
     <a href="projects.md" target="_blank">projects.md</a>
     <a href="history-log.md" target="_blank">history-log.md</a>
-  </div>
+  </nav>
 </div>
 
 <script>
 const COLS=["INBOX","NEXT","DOING","WAITING","DONE"];
-let compact=false;
-let filterOwner='ALL';
-let filterPriority='ALL';
+let compact=false, filterOwner='ALL', filterPriority='ALL';
 
 function section(md,title){
   const r=new RegExp(`### ${title}\\n([\\s\\S]*?)(?=\\n### |\\n---|$)`,'m');
@@ -135,25 +117,24 @@ function section(md,title){
 function lines(sec){return sec.split('\n').filter(l=>l.trim().startsWith('-'))}
 function parse(line){
   const m=line.match(/^- \[(.| )\] \((P\d)\) \[(ME|GIACO)\] (.*)$/i);
-  if(!m) return {raw:line,done:false,p:'P3',o:'ME',t:line.replace(/^- \[[ x]\]\s*/, '')};
-  return {raw:line,done:m[1].toLowerCase()==='x',p:m[2].toUpperCase(),o:m[3].toUpperCase(),t:m[4]};
+  if(!m) return {p:'P3',o:'ME',t:line.replace(/^- \[[ x]\]\s*/, '')};
+  return {p:m[2].toUpperCase(),o:m[3].toUpperCase(),t:m[4]};
 }
 
 async function load(){
-  const v='?v='+Date.now();
+  const bust='?v='+Date.now();
   const [boardMd,giacoMd,historyMd]=await Promise.all([
-    fetch('board.md'+v).then(r=>r.text()),
-    fetch('giaco-tasks.md'+v).then(r=>r.text()),
-    fetch('history-log.md'+v).then(r=>r.text())
+    fetch('board.md'+bust).then(r=>r.text()),
+    fetch('giaco-tasks.md'+bust).then(r=>r.text()),
+    fetch('history-log.md'+bust).then(r=>r.text())
   ]);
-  document.getElementById('stamp').textContent='Live · '+new Date().toLocaleString();
+  stamp.textContent='Live · '+new Date().toLocaleString();
   giaco.textContent=giacoMd;
-  history.textContent=historyMd.split('\n').slice(-42).join('\n');
-
-  renderBoard(boardMd);
+  history.textContent=historyMd.split('\n').slice(-40).join('\n');
+  render(boardMd);
 }
 
-function renderBoard(boardMd){
+function render(boardMd){
   board.innerHTML='';
   let open=0,doing=0,waiting=0,done=0;
 
@@ -161,29 +142,19 @@ function renderBoard(boardMd){
     const all=lines(section(boardMd,colName)).map(parse);
     const tasks=all.filter(t=>(filterOwner==='ALL'||t.o===filterOwner)&&(filterPriority==='ALL'||t.p===filterPriority));
 
-    const col=document.createElement('section'); col.className='col'; col.dataset.col=colName;
+    const col=document.createElement('section'); col.className='col';
     col.innerHTML=`<div class="colHead"><h3>${colName}</h3><span class="count">${tasks.length}</span></div><div class="tasks"></div>`;
     const list=col.querySelector('.tasks');
 
-    tasks.forEach((t,i)=>{
-      const card=document.createElement('article'); card.className='task'; card.draggable=true; card.dataset.title=t.t; card.dataset.from=colName;
+    tasks.forEach(t=>{
+      const card=document.createElement('article'); card.className='task'; card.draggable=true;
       card.innerHTML=`<div class="taskTitle">${t.t}</div>${compact?'':`<div class="meta"><span class="tag ${t.p.toLowerCase()}">${t.p}</span><span class="tag owner">${t.o}</span></div>`}`;
       card.addEventListener('dragstart',()=>card.classList.add('dragging'));
       card.addEventListener('dragend',()=>card.classList.remove('dragging'));
       list.appendChild(card);
     });
 
-    list.addEventListener('dragover',e=>e.preventDefault());
-    list.addEventListener('drop',e=>{
-      e.preventDefault();
-      const card=document.querySelector('.task.dragging');
-      if(card){
-        list.prepend(card);
-        alert(`Moved "${card.dataset.title}" to ${colName}.\n(visual move done; sync to board.md can be automated next step)`);
-      }
-    });
-
-    if(!tasks.length){const p=document.createElement('div');p.className='sub';p.style.padding='8px';p.textContent='No tasks';list.appendChild(p)}
+    if(!tasks.length){const e=document.createElement('div');e.className='sub';e.style.padding='8px';e.textContent='No tasks';list.appendChild(e)}
     board.appendChild(col);
 
     if(colName==='DONE') done+=tasks.length; else open+=tasks.length;
@@ -196,28 +167,14 @@ function renderBoard(boardMd){
 
 refreshBtn.onclick=load;
 compactBtn.onclick=()=>{compact=!compact; compactBtn.textContent=compact?'Expanded':'Compact'; load();};
-snapshotBtn.onclick=()=>alert('Snapshot marker added visually. I can wire this to snapshots files in next pass.');
-addBtn.onclick=()=>{
-  const t=taskInput.value.trim(); if(!t) return;
-  alert(`Captured:\n${t}\nOwner: ${ownerSel.value}\nPriority: ${prioSel.value}\nStatus: ${statusSel.value}\n\nI can wire this button to write directly into board.md in next pass.`);
-  taskInput.value='';
-};
 
-Array.from(document.querySelectorAll('.chip[data-owner]')).forEach(ch=>{
-  ch.onclick=()=>{
-    document.querySelectorAll('.chip[data-owner]').forEach(c=>c.classList.remove('active'));
-    ch.classList.add('active');
-    filterOwner=ch.dataset.owner;
-    load();
-  }
+document.querySelectorAll('.chip[data-owner]').forEach(ch=>ch.onclick=()=>{
+  document.querySelectorAll('.chip[data-owner]').forEach(c=>c.classList.remove('active'));
+  ch.classList.add('active'); filterOwner=ch.dataset.owner; load();
 });
-Array.from(document.querySelectorAll('.chip[data-priority]')).forEach(ch=>{
-  ch.onclick=()=>{
-    document.querySelectorAll('.chip[data-priority]').forEach(c=>c.classList.remove('active'));
-    ch.classList.add('active');
-    filterPriority=ch.dataset.priority;
-    load();
-  }
+document.querySelectorAll('.chip[data-priority]').forEach(ch=>ch.onclick=()=>{
+  document.querySelectorAll('.chip[data-priority]').forEach(c=>c.classList.remove('active'));
+  ch.classList.add('active'); filterPriority=ch.dataset.priority; load();
 });
 
 load();
